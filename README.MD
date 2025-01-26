@@ -2,6 +2,8 @@
 
 ## Participated in Global [Game Jam 2025 - Memory Bubble Store](https://globalgamejam.org/games/2025/memory-bubble-store-1)
 
+[p5.js code - Memory Bubble Store](https://editor.p5js.org/chanc245_chrissy/sketches/0tk98XunT)
+
 ### ABOUT
 
 In Memory Bubble Store, players take on the role of a shop owner who sells origami toys sealed in delicate bubbles, each imbued with a powerful memory of childhood connections with nature. As players interact with these toys, they unlock the personal stories and early memories of characters who once found joy and comfort in nature. Through these experiences, players explore five key pathways to strengthen their bond with nature—sensory contact, appreciating beauty, reflecting on meaning, forming emotional bonds, and showing care for the environment. These memories help ease eco-anxiety and boost mental health, fostering resilience and well-being by reconnecting players with nature.
