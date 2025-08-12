@@ -12,16 +12,14 @@ function startTimer_s11() {
 
 function selectSectionGoto(x1, y1, x2, y2, goto) {
   push();
-  if (mouseWithin(x1, y1, x2, y2)) {
+  if (pointerWithin(x1, y1, x2, y2)) {
     rectMode(CORNERS);
     stroke(255);
     strokeWeight(1);
     noFill();
     rect(x1, y1, x2, y2);
-
-    if (mouseIsPressed) {
+    if (isPointerDown()) {
       locationNum = goto;
-      // console.log(locationNum);
     }
   }
   pop();
@@ -29,7 +27,7 @@ function selectSectionGoto(x1, y1, x2, y2, goto) {
 
 function s0_selectSectionGoto(x1, y1, x2, y2, goto) {
   push();
-  if (mouseWithin(x1, y1, x2, y2)) {
+  if (pointerWithin(x1, y1, x2, y2)) {
     push();
 
     noFill();
@@ -64,7 +62,7 @@ function s0_selectSectionGoto(x1, y1, x2, y2, goto) {
 
 function selectSection(x1, y1, x2, y2) {
   push();
-  if (mouseWithin(x1, y1, x2, y2)) {
+  if (pointerWithin(x1, y1, x2, y2)) {
     rectMode(CORNERS);
     stroke(255);
     strokeWeight(1);
@@ -74,9 +72,9 @@ function selectSection(x1, y1, x2, y2) {
   pop();
 }
 
-function tri_selectSection(x1, y1, x2, y2, mid) {
+function tri_selectSection(x1, y1, x2, y2) {
   push();
-  if (mouseWithin(x1, y1, x2, y2)) {
+  if (pointerWithin(x1, y1, x2, y2)) {
     stroke(255);
     strokeWeight(1);
     noFill();
@@ -109,7 +107,7 @@ function showItemText(x1, y1, action) {
 }
 
 function rightItemNextScene(x1, y1, x2, y2, num) {
-  if (mouseWithin(x1, y1, x2, y2) && mouseIsPressed) {
+  if (pointerWithin(x1, y1, x2, y2) && isPointerDown()) {
     locationNum = num;
   }
 }

@@ -39,50 +39,39 @@ class ShowHint {
 
   display() {
     if (
-      mouseX > this.enterX1 &&
-      mouseX < this.enterX2 &&
-      mouseY > this.enterY1 &&
-      mouseY < this.enterY2 &&
-      mouseIsPressed
+      pointerWithin(this.enterX1, this.enterY1, this.enterX2, this.enterY2) &&
+      isPointerDown()
     ) {
       this.visible = true;
     }
 
     if (this.visible) {
       push();
-
       image(this.img, this.imgX, this.imgY);
-
       fill(100);
       textFont(halfBoldPixel);
       textSize(16);
       textAlign(LEFT, TOP);
       text(this.texts, this.textX, this.textY, 480, 130);
-
       pop();
     }
   }
 
   right() {
     if (
-      mouseX > this.enterX1 &&
-      mouseX < this.enterX2 &&
-      mouseY > this.enterY1 &&
-      mouseY < this.enterY2 &&
-      mouseIsPressed
+      pointerWithin(this.enterX1, this.enterY1, this.enterX2, this.enterY2) &&
+      isPointerDown()
     ) {
-      console.log("retrun right() true");
+      // console.log("retrun right() true");
       return true;
     }
+    return false;
   }
 
   exit() {
     if (
-      mouseX > this.exitX1 &&
-      mouseX < this.exitX2 &&
-      mouseY > this.exitY1 &&
-      mouseY < this.exitY2 &&
-      mouseIsPressed
+      pointerWithin(this.exitX1, this.exitY1, this.exitX2, this.exitY2) &&
+      isPointerDown()
     ) {
       this.visible = false;
     }

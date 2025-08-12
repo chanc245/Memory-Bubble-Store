@@ -163,27 +163,45 @@ function draw() {
   allDebugFunction();
 }
 
-function mousePressed() {
+function pointerPressed() {
   showXY();
 
-  if (locationNum == 1 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 1 && pointerWithin(545, 415, 580, 445))
     char01_kid_start.advance();
-  if (locationNum == 2 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 2 && pointerWithin(545, 415, 580, 445))
     char01_kid_end.advance();
-  if (locationNum == 3 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 3 && pointerWithin(545, 415, 580, 445))
     char02_panda_start.advance();
-  if (locationNum == 4 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 4 && pointerWithin(545, 415, 580, 445))
     char02_panda_end.advance();
-  if (locationNum == 5 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 5 && pointerWithin(545, 415, 580, 445))
     char03_mom_start.advance();
-  if (locationNum == 6 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 6 && pointerWithin(545, 415, 580, 445))
     char03_mom_end.advance();
-  if (locationNum == 7 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 7 && pointerWithin(545, 415, 580, 445))
     char04_mole_start.advance();
-  if (locationNum == 8 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 8 && pointerWithin(545, 415, 580, 445))
     char04_mole_end.advance();
-  if (locationNum == 9 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 9 && pointerWithin(545, 415, 580, 445))
     char05_h_start.advance();
-  if (locationNum == 10 && mouseWithin(545, 415, 580, 445))
+  if (locationNum == 10 && pointerWithin(545, 415, 580, 445))
     char05_h_end.advance();
+}
+
+function mousePressed() {
+  pointerPressed();
+}
+
+function touchStarted() {
+  touchDown = true;
+  pointerPressed();
+  return false; // prevent page scroll/zoom
+}
+function touchEnded() {
+  touchDown = false;
+  return false;
+}
+function touchMoved() {
+  // prevent scrolling while dragging on canvas
+  return false;
 }
