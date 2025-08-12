@@ -81,7 +81,7 @@ function setup() {
   item_airplane_text = new DialogueBox(item_airplane_text);
   item_extra_text = new DialogueBox(item_extra_text);
 
-  // Item click result (wrong)
+  // Item click result (wrong) — we won’t show these bubbles on touch, but keep for desktop
   item_extra_wrong = new ShowHint(
     55,
     27,
@@ -155,9 +155,18 @@ function setup() {
     text_item_wrong
   );
 
-  // Audio
-  bg_song.play();
-  bg_song.loop();
+  // --- AUDIO START POLICY ---
+  // Desktop browsers: try to start immediately on load
+  // Mobile browsers: wait for first touch (handled in touchScreen.js)
+  if (!isTouchDevice) {
+    try {
+      if (bg_song && !bg_song.isPlaying()) {
+        bg_song.loop(); // desktop usually allows autoplay
+      }
+    } catch (e) {
+      // If blocked, first click will call ensureAudio()
+    }
+  }
 }
 
 function draw() {
@@ -165,7 +174,7 @@ function draw() {
 
   changeScene();
 
-  // Draw touch-only tapped item info (description + wrong message if applicable)
+  // Draw touch-only tapped item info (explanation or wrong-line page)
   if (typeof drawTappedItemInfo === "function") {
     drawTappedItemInfo();
   }

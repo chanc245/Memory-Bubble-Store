@@ -20,7 +20,7 @@ let timerStarted_s11 = false;
 let ang = 0;
 
 // --- Pointer (mouse + touch) helpers ---
-// touchDown is used by touchScreen.js event hooks
+// touchDown is toggled in touchScreen.js handlers
 let touchDown = false;
 
 function pointerX() {
@@ -41,8 +41,41 @@ function pointerWithin(x1, y1, x2, y2) {
   const y = pointerY();
   return x > x1 && x < x2 && y > y1 && y < y2;
 }
-
 // Keep compatibility with existing calls
 function mouseWithin(x1, y1, x2, y2) {
   return pointerWithin(x1, y1, x2, y2);
+}
+
+// ===============================
+// Mobile-safe audio bootstrap
+// ===============================
+let audioPrimed = false;
+
+function ensureAudio() {
+  // Resume p5 AudioContext (required on mobile)
+  try {
+    if (typeof getAudioContext === "function") {
+      const ctx = getAudioContext && getAudioContext();
+      if (
+        ctx &&
+        ctx.state !== "running" &&
+        typeof userStartAudio === "function"
+      ) {
+        userStartAudio();
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // Start/loop bg music once
+  if (typeof bg_song !== "undefined" && bg_song && !bg_song.isPlaying()) {
+    try {
+      bg_song.loop();
+    } catch (e) {
+      // ignore; will retry on next interaction
+    }
+  }
+
+  audioPrimed = true;
 }

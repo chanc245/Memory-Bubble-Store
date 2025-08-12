@@ -215,11 +215,12 @@ function pointerPressed() {
 
 // Route p5 mouse/touch events to the unified handler
 function mousePressed() {
+  ensureAudio(); // desktop fallback if autoplay was blocked
   pointerPressed();
 }
 function touchStarted() {
-  // touchDown is defined in aDefGlob_basic.js
   touchDown = true;
+  ensureAudio(); // REQUIRED on mobile: starts/resumes audio context + loops bg_song
   handleTouchTap(pointerX(), pointerY());
   pointerPressed();
   return false; // prevent page scroll/zoom
