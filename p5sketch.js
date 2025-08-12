@@ -52,6 +52,9 @@ function preload() {
   bg_song = loadSound("p5assets/bg/bg_music.mp3");
 }
 
+let canvasW = 640;
+let canvasH = 480;
+
 function setup() {
   createCanvas(640, 480);
   frameRate(30);
@@ -60,6 +63,24 @@ function setup() {
   // Detect touch device once here
   if (typeof isTouchDevice !== "undefined") {
     isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  }
+
+  isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  if (isTouchDevice) {
+    // For phone — smaller canvas
+    canvasW = 480;
+    canvasH = 360;
+  }
+
+  createCanvas(canvasW, canvasH);
+  pixelDensity(1);
+
+  // If you want to keep aspect ratio but scale content
+  if (isTouchDevice) {
+    scaleFactor = canvasW / 640; // used later in draw()
+  } else {
+    scaleFactor = 1;
   }
 
   // Character dialogue
@@ -172,6 +193,8 @@ function setup() {
 
 function draw() {
   background(100);
+  push();
+  scale(scaleFactor);
 
   if (showRotateOverlay) {
     drawRotateOverlay();
@@ -185,6 +208,7 @@ function draw() {
     drawTappedItemInfo();
   }
 
+  pop();
   allDebugFunction();
 }
 
