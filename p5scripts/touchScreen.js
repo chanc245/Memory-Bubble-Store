@@ -2,17 +2,18 @@
 // ===============================
 // Touchscreen + Pointer Unification (touch-only UX)
 // ===============================
+//
+// Note:
+// - Pointer helpers (pointerWithin, pointerX/Y, isPointerDown, touchDown var)
+//   live in aDefGlob_basic.js — we rely on them here.
+// - isTouchDevice is set in setup() (p5sketch.js) but we declare it here.
 
-// Device/tap state
 let isTouchDevice = false;
-let tappedItemKey = null;
 
-// touch-only flow state
-// After tapping an item, we show the explanation.
-// Then, on triangle tap, either advance (if correct) or show "wrong" line.
-// If wrong line is showing, a second triangle tap dismisses it.
-let touchPendingOutcome = null; // 'correct' | 'wrong' | null
-let touchShowWrongPage = false; // when true, show only the wrong-line page
+// Touch flow state
+let tappedItemKey = null; // which item was tapped (for explanation/wrong page)
+let touchPendingOutcome = null; // 'correct' | 'wrong' | null (decided after tap, before triangle)
+let touchShowWrongPage = false; // if true: show only the single-line "not right item" page
 
 // Areas → DialogueBox (desc) + ShowHint (we DON'T use its bubble on touch)
 const ITEM_AREAS = {
@@ -84,12 +85,14 @@ function isCorrectForScene(key) {
 
 function clearAllWrongHints() {
   // These globals exist from setup.js (ShowHint instances)
-  item_extra_wrong.visible = false;
-  item_airplane_wrong.visible = false;
-  item_boat_wrong.visible = false;
-  item_flower_wrong.visible = false;
-  item_doll_wrong.visible = false;
-  item_ball_wrong.visible = false;
+  if (typeof item_extra_wrong !== "undefined") item_extra_wrong.visible = false;
+  if (typeof item_airplane_wrong !== "undefined")
+    item_airplane_wrong.visible = false;
+  if (typeof item_boat_wrong !== "undefined") item_boat_wrong.visible = false;
+  if (typeof item_flower_wrong !== "undefined")
+    item_flower_wrong.visible = false;
+  if (typeof item_doll_wrong !== "undefined") item_doll_wrong.visible = false;
+  if (typeof item_ball_wrong !== "undefined") item_ball_wrong.visible = false;
 }
 
 // --- Touch tap on canvas: pick an item and show its explanation
@@ -215,20 +218,23 @@ function pointerPressed() {
 
 // Route p5 mouse/touch events to the unified handler
 function mousePressed() {
-  ensureAudio(); // desktop fallback if autoplay was blocked
+  // Desktop fallback if autoplay was blocked
+  if (typeof ensureAudio === "function") ensureAudio();
   pointerPressed();
 }
+
+// IMPORTANT: allow page scrolling on mobile — do NOT return false.
 function touchStarted() {
   touchDown = true;
-  ensureAudio(); // REQUIRED on mobile: starts/resumes audio context + loops bg_song
+  if (typeof ensureAudio === "function") ensureAudio(); // start/resume audio + loop bg
   handleTouchTap(pointerX(), pointerY());
   pointerPressed();
-  return false; // prevent page scroll/zoom
+  // No return value -> let the browser scroll if the user drags
+}
+function touchMoved() {
+  // Allow normal page scrolling (do not preventDefault / do not return false)
 }
 function touchEnded() {
   touchDown = false;
-  return false;
-}
-function touchMoved() {
-  return false; // prevent scrolling while dragging on canvas
+  // Allow normal behavior (no return false)
 }
