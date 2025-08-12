@@ -55,6 +55,7 @@ function preload() {
 function setup() {
   createCanvas(640, 480);
   frameRate(30);
+  checkOrientation();
 
   // Detect touch device once here
   if (typeof isTouchDevice !== "undefined") {
@@ -171,6 +172,11 @@ function setup() {
 
 function draw() {
   background(100);
+
+  if (showRotateOverlay) {
+    drawRotateOverlay();
+    return; // stop drawing game until rotated
+  }
 
   changeScene();
 
