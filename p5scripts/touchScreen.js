@@ -1,13 +1,20 @@
 // p5scripts/touchScreen.js
 // ===============================
-// Touchscreen + Pointer Unification
+// Touchscreen + Pointer Unification (touch-only UX)
 // ===============================
 
 // Device/tap state
 let isTouchDevice = false;
 let tappedItemKey = null;
 
-// Areas → DialogueBox (desc) + ShowHint (wrong)
+// touch-only flow state
+// After tapping an item, we show the explanation.
+// Then, on triangle tap, either advance (if correct) or show "wrong" line.
+// If wrong line is showing, a second triangle tap dismisses it.
+let touchPendingOutcome = null; // 'correct' | 'wrong' | null
+let touchShowWrongPage = false; // when true, show only the wrong-line page
+
+// Areas → DialogueBox (desc) + ShowHint (we DON'T use its bubble on touch)
 const ITEM_AREAS = {
   extra: {
     x1: 55,
@@ -68,12 +75,15 @@ const CORRECT_BY_SCENE = {
   9: "airplane", // hedgehog
 };
 
+// Scene to go to if correct is chosen
+const SCENE_ADVANCE = { 1: 2, 3: 4, 5: 6, 7: 8, 9: 10 };
+
 function isCorrectForScene(key) {
   return CORRECT_BY_SCENE[locationNum] === key;
 }
 
 function clearAllWrongHints() {
-  // These globals are created in setup when you new ShowHint(...)
+  // These globals exist from setup.js (ShowHint instances)
   item_extra_wrong.visible = false;
   item_airplane_wrong.visible = false;
   item_boat_wrong.visible = false;
@@ -82,9 +92,13 @@ function clearAllWrongHints() {
   item_ball_wrong.visible = false;
 }
 
-// --- Tap behavior: show description and, if wrong, the message ---
+// --- Touch tap on canvas: pick an item and show its explanation
 function handleTouchTap(x, y) {
   if (!isTouchDevice) return;
+
+  // Reset flow state each tap on items
+  touchPendingOutcome = null;
+  touchShowWrongPage = false;
 
   let hitKey = null;
   for (const [key, area] of Object.entries(ITEM_AREAS)) {
@@ -101,32 +115,80 @@ function handleTouchTap(x, y) {
   }
 
   tappedItemKey = hitKey;
-  clearAllWrongHints();
+  clearAllWrongHints(); // don't show the bubble; we render inline
 
-  if (!isCorrectForScene(hitKey)) {
-    // Shows: "This doesn't seem like the right item for this customer"
-    ITEM_AREAS[hitKey].wrong().visible = true;
-  }
+  // Decide outcome after explanation, but WAIT for triangle tap to proceed
+  touchPendingOutcome = isCorrectForScene(hitKey) ? "correct" : "wrong";
 }
 
-// Draw tapped item info on touch devices each frame
+// Draw current touch-only UI
 function drawTappedItemInfo() {
   if (!isTouchDevice || !tappedItemKey) return;
 
+  // If wrong page is toggled, show ONLY the wrong line inside the dialogue box
+  if (touchShowWrongPage) {
+    push();
+    image(dia_UI, 20, 372, 600, 100); // same box art as DialogueBox
+    fill(100);
+    textFont(halfBoldPixel);
+    textSize(16);
+    textAlign(LEFT, TOP);
+    text(
+      "This doesn't seem like the right item for this customer",
+      60,
+      405,
+      500,
+      130
+    );
+    pop();
+    return;
+  }
+
+  // Otherwise, show the item's explanation DialogueBox
   const descBox = ITEM_AREAS[tappedItemKey].desc();
   if (descBox && typeof descBox.display === "function") {
     descBox.display();
   }
-
-  const wrong = ITEM_AREAS[tappedItemKey].wrong();
-  if (wrong && wrong.visible) wrong.display();
 }
 
 // ===============================
 // Unified press handler (for both mouse & touch)
 // ===============================
 function pointerPressed() {
-  // moved from your original mousePressed()
+  // TOUCH-ONLY override for the triangle while an item is active
+  if (isTouchDevice && tappedItemKey && pointerWithin(545, 415, 580, 445)) {
+    // If we're currently showing the wrong page, a triangle tap dismisses it.
+    if (touchShowWrongPage) {
+      touchShowWrongPage = false;
+      tappedItemKey = null; // allow choosing another item
+      touchPendingOutcome = null;
+      return; // consume press
+    }
+
+    // We're on the explanation "page" and the user tapped triangle:
+    if (touchPendingOutcome === "correct") {
+      const target = SCENE_ADVANCE[locationNum];
+      if (target != null) {
+        // Advance scene
+        locationNum = target;
+      }
+      // Cleanup
+      tappedItemKey = null;
+      touchPendingOutcome = null;
+      touchShowWrongPage = false;
+      clearAllWrongHints();
+      return; // consume press
+    } else if (touchPendingOutcome === "wrong") {
+      // Switch to the single-line "not right item" page
+      touchShowWrongPage = true;
+      // keep tappedItemKey so we can draw the wrong page; pendingOutcome can be cleared
+      touchPendingOutcome = null;
+      return; // consume press
+    }
+    // If no pending outcome set, fall through to normal behavior
+  }
+
+  // Otherwise, proceed with normal dialogue advances (desktop or no touch context)
   showXY();
 
   if (locationNum == 1 && pointerWithin(545, 415, 580, 445))
