@@ -55,7 +55,16 @@ function changeScene() {
       break;
   }
 
-  if (locationNum == 11 && keyIsDown(32)) {
-    locationNum++;
+  // Desktop/keyboard: advance from scene 11 -> 12 with [space]
+  if (locationNum === 11 && keyIsDown(32)) {
+    locationNum = 12;
+
+    // Clear touch UI remnants when changing scenes
+    if (typeof tappedItemKey !== "undefined") {
+      tappedItemKey = null;
+    }
+    if (typeof clearAllWrongHints === "function") {
+      clearAllWrongHints();
+    }
   }
 }

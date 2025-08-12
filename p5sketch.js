@@ -1,18 +1,18 @@
-// p5sketches.js
+// p5sketch.js
 
 function preload() {
-  //Font
+  // Font
   halfBoldPixel = loadFont("p5assets/fonts/half_bold_pixel-7.ttf");
   BulkyPixels = loadFont("p5assets/fonts/BULKYPIX.TTF");
 
-  //Scene bg img
+  // Scene bg img
   scene0_Img = loadImage("p5assets/bg/bg_title.png");
   scene01_Img = loadImage("p5assets/bg/bg_title_rain.gif");
   scene1_Img = loadImage("p5assets/bg/bg_store.png");
   scene11_Gif = loadImage("p5assets/bg/bg_ending.gif");
   scene12_Img = loadImage("p5assets/bg/bg_sunny.jpg");
 
-  //Chara img
+  // Chara img
   kid_happy = loadImage("p5assets/char/char_kidDuck_happy.png");
   kid_stress = loadImage("p5assets/char/char_kidDuck_stressed.png");
   kid_think = loadImage("p5assets/char/char_kidDuck_thinking.png");
@@ -29,13 +29,13 @@ function preload() {
   h_think = loadImage("p5assets/char/char_hedgehog_thinking.png");
   h_happy = loadImage("p5assets/char/char_hedgehog_happy.png");
 
-  //UI
+  // UI
   des_UI = loadImage("p5assets/ui/ui_text.png");
   dia_UI = loadImage("p5assets/ui/ui_text.png");
   ui_startBubble = loadImage("p5assets/ui/ui_startBubble.png");
   ui_thinkBubble = loadImage("p5assets/ui/ui_thinkBubble.png");
 
-  //Gifs
+  // Gifs
   cg_kid_1 = loadImage("p5assets/gif/cg_kid_1.gif");
   cg_kid_2 = loadImage("p5assets/gif/cg_kid_2.gif");
   cg_panda_1 = loadImage("p5assets/gif/cg_panda_1.gif");
@@ -47,7 +47,7 @@ function preload() {
   cg_hedgehog_1 = loadImage("p5assets/gif/cg_hedge_1.gif");
   cg_hedgehog_2 = loadImage("p5assets/gif/cg_hedge_2.gif");
 
-  //Music
+  // Music
   soundFormats("mp3");
   bg_song = loadSound("p5assets/bg/bg_music.mp3");
 }
@@ -56,7 +56,12 @@ function setup() {
   createCanvas(640, 480);
   frameRate(30);
 
-  //Character dialogue
+  // Detect touch device once here
+  if (typeof isTouchDevice !== "undefined") {
+    isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  }
+
+  // Character dialogue
   char01_kid_start = new DialogueBox(char01_kid_start);
   char01_kid_end = new MemoryDiaBox(char01_kid_end);
   char02_panda_start = new DialogueBox(char02_panda_start);
@@ -68,7 +73,7 @@ function setup() {
   char05_h_start = new DialogueBox(char05_h_start);
   char05_h_end = new MemoryDiaBox(char05_h_end);
 
-  //Item hover text
+  // Item hover text
   item_flower_text = new DialogueBox(item_flower_text);
   item_ball_text = new DialogueBox(item_ball_text);
   item_doll_text = new DialogueBox(item_doll_text);
@@ -76,7 +81,7 @@ function setup() {
   item_airplane_text = new DialogueBox(item_airplane_text);
   item_extra_text = new DialogueBox(item_extra_text);
 
-  //Item click result wrong
+  // Item click result (wrong)
   item_extra_wrong = new ShowHint(
     55,
     27,
@@ -150,7 +155,7 @@ function setup() {
     text_item_wrong
   );
 
-  //Audio
+  // Audio
   bg_song.play();
   bg_song.loop();
 }
@@ -160,48 +165,13 @@ function draw() {
 
   changeScene();
 
+  // Draw touch-only tapped item info (description + wrong message if applicable)
+  if (typeof drawTappedItemInfo === "function") {
+    drawTappedItemInfo();
+  }
+
   allDebugFunction();
 }
 
-function pointerPressed() {
-  showXY();
-
-  if (locationNum == 1 && pointerWithin(545, 415, 580, 445))
-    char01_kid_start.advance();
-  if (locationNum == 2 && pointerWithin(545, 415, 580, 445))
-    char01_kid_end.advance();
-  if (locationNum == 3 && pointerWithin(545, 415, 580, 445))
-    char02_panda_start.advance();
-  if (locationNum == 4 && pointerWithin(545, 415, 580, 445))
-    char02_panda_end.advance();
-  if (locationNum == 5 && pointerWithin(545, 415, 580, 445))
-    char03_mom_start.advance();
-  if (locationNum == 6 && pointerWithin(545, 415, 580, 445))
-    char03_mom_end.advance();
-  if (locationNum == 7 && pointerWithin(545, 415, 580, 445))
-    char04_mole_start.advance();
-  if (locationNum == 8 && pointerWithin(545, 415, 580, 445))
-    char04_mole_end.advance();
-  if (locationNum == 9 && pointerWithin(545, 415, 580, 445))
-    char05_h_start.advance();
-  if (locationNum == 10 && pointerWithin(545, 415, 580, 445))
-    char05_h_end.advance();
-}
-
-function mousePressed() {
-  pointerPressed();
-}
-
-function touchStarted() {
-  touchDown = true;
-  pointerPressed();
-  return false; // prevent page scroll/zoom
-}
-function touchEnded() {
-  touchDown = false;
-  return false;
-}
-function touchMoved() {
-  // prevent scrolling while dragging on canvas
-  return false;
-}
+// NOTE: No mousePressed() here.
+// Desktop clicks and mobile taps are handled in p5scripts/touchScreen.js via pointerPressed().

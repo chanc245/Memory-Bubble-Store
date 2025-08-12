@@ -18,8 +18,16 @@ function selectSectionGoto(x1, y1, x2, y2, goto) {
     strokeWeight(1);
     noFill();
     rect(x1, y1, x2, y2);
+
     if (isPointerDown()) {
       locationNum = goto;
+      // cleanup if we changed scenes via click/tap
+      if (typeof tappedItemKey !== "undefined") {
+        tappedItemKey = null;
+      }
+      if (typeof clearAllWrongHints === "function") {
+        clearAllWrongHints();
+      }
     }
   }
   pop();
@@ -29,11 +37,9 @@ function s0_selectSectionGoto(x1, y1, x2, y2, goto) {
   push();
   if (pointerWithin(x1, y1, x2, y2)) {
     push();
-
     noFill();
     stroke(220, 225, 180);
     strokeWeight(2);
-
     beginShape();
     vertex(282, 356);
     vertex(305, 265);
@@ -49,12 +55,17 @@ function s0_selectSectionGoto(x1, y1, x2, y2, goto) {
     vertex(297, 402);
     vertex(283, 356);
     endShape();
-
     pop();
 
-    if (mouseIsPressed) {
+    if (isPointerDown()) {
+      // (changed from mouseIsPressed)
       locationNum = goto;
-      // console.log(locationNum);
+      if (typeof tappedItemKey !== "undefined") {
+        tappedItemKey = null;
+      }
+      if (typeof clearAllWrongHints === "function") {
+        clearAllWrongHints();
+      }
     }
   }
   pop();
@@ -95,19 +106,21 @@ function showItemText(x1, y1, action) {
   push();
   rectMode(CORNERS);
   noFill();
-  // rect(x1, y1, x2, y2);
 
   if (mouseWithin(x1, y1, x2, y2)) {
-    // fill(255);
-    // rect(x1, y1, x2, y2);
     action();
   }
-
   pop();
 }
 
 function rightItemNextScene(x1, y1, x2, y2, num) {
   if (pointerWithin(x1, y1, x2, y2) && isPointerDown()) {
     locationNum = num;
+    if (typeof tappedItemKey !== "undefined") {
+      tappedItemKey = null;
+    }
+    if (typeof clearAllWrongHints === "function") {
+      clearAllWrongHints();
+    }
   }
 }

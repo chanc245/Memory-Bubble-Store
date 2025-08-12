@@ -1,5 +1,4 @@
 // p5classes/ShowHint.js
-
 class ShowHint {
   constructor(
     enterX1,
@@ -33,8 +32,6 @@ class ShowHint {
     this.img = img;
     this.visible = false;
     this.isRight = false;
-
-    // this.action = action;
   }
 
   display() {
@@ -62,7 +59,6 @@ class ShowHint {
       pointerWithin(this.enterX1, this.enterY1, this.enterX2, this.enterY2) &&
       isPointerDown()
     ) {
-      // console.log("retrun right() true");
       return true;
     }
     return false;
