@@ -3,23 +3,48 @@
 function scene11() {
   image(scene11_Gif, 0, 0, bgW, bgH);
 
-  //   if (!timerStarted_s11 && locationNum == 11) {
-  //     startTimer_s11();
-  //     timerStarted_s11 = true;
-  //   }
+  // Start the timer the moment we enter scene 11
+  if (!timerStarted_s11 && locationNum === 11) {
+    startTimer_s11();
+    timerStarted_s11 = true;
+  }
 
-  //   if (timerStart_s11 !== null && timerStart_s11 > 5000) {
-  //     console.log("time up!")
-  //     locationNum = 12;
-  //   }
+  // Auto-advance after one full GIF duration
+  if (
+    timerStart_s11 !== null &&
+    millis() - timerStart_s11 >= ENDING_GIF_ONCE_MS
+  ) {
+    // go to the end page automatically
+    locationNum = 12;
 
+    // cleanup any touch overlays if present
+    if (typeof tappedItemKey !== "undefined") tappedItemKey = null;
+    if (typeof clearAllWrongHints === "function") clearAllWrongHints();
+
+    // reset the ending timer flags (optional)
+    timerStart_s11 = null;
+    timerStarted_s11 = false;
+    return;
+  }
+
+  // Optional: allow skipping via SPACE right away
+  if (keyIsDown(32)) {
+    locationNum = 12;
+    if (typeof tappedItemKey !== "undefined") tappedItemKey = null;
+    if (typeof clearAllWrongHints === "function") clearAllWrongHints();
+    timerStart_s11 = null;
+    timerStarted_s11 = false;
+    return;
+  }
+
+  // Small on-screen hint (now says "press [space] to skip")
   push();
   textFont(BulkyPixels);
   textAlign(CENTER);
   fill(100, 80, 80);
   textLeading(25);
   textSize(15);
-  text("press [space] to continue", 0, 400, 640, 100);
+  text("press [space] to skip", 0, 400, 640, 100);
   pop();
 }
 
@@ -46,12 +71,14 @@ function scene12() {
   textSize(14);
   text("Havenever Studio 2025", 55, 260);
 
-  push(); //spinning start
+  // spinning bubble
+  push();
   imageMode(CENTER);
   translate(415, 330);
   rotate(ang);
   image(ui_startBubble, 0, 0, 270, 270);
   ang += radians(0.8);
-  pop(); //spinning stop
+  pop();
+
   pop();
 }

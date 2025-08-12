@@ -19,6 +19,9 @@ let timerStarted_s11 = false;
 
 let ang = 0;
 
+// Duration for the ending GIF to play once (milliseconds)
+const ENDING_GIF_ONCE_MS = 28000;
+
 // --- Pointer (mouse + touch) helpers ---
 // touchDown is toggled in touchScreen.js handlers
 let touchDown = false;
