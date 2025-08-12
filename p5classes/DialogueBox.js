@@ -1,4 +1,4 @@
-// DialogueBox.js
+// p5classes/DialogueBox.js
 
 class DialogueBox {
   constructor(texts) {

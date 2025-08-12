@@ -1,4 +1,4 @@
-// setup.js
+// p5scripts/setup.js
 
 function startTimer() {
   timerStart = millis();

@@ -1,4 +1,4 @@
-// scene78_farmer.js
+// p5scenes/scene78_farmer.js
 
 function scene7() {
   push();

@@ -1,4 +1,4 @@
-// scene0_title.js
+// p5scenes/scene0_title.js
 
 function scene0() {
   push();

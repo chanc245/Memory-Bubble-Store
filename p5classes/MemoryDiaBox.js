@@ -1,4 +1,4 @@
-// MemoryDiaBox.js
+// p5classes/MemoryDiaBox.js
 
 class MemoryDiaBox {
   constructor(texts) {

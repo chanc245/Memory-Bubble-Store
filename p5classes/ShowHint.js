@@ -1,4 +1,4 @@
-// ShowHint.js
+// p5classes/ShowHint.js
 
 class ShowHint {
   constructor(

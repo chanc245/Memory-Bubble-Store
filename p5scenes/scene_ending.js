@@ -1,4 +1,4 @@
-// scene_ending.js
+// p5scenes/scene_ending.js
 
 function scene11() {
   image(scene11_Gif, 0, 0, bgW, bgH);

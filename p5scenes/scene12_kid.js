@@ -1,4 +1,4 @@
-// scene12_kid.js
+// p5scenes/scene12_kid.js
 
 function scene1() {
   push();

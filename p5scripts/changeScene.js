@@ -1,4 +1,4 @@
-// changeScene.js
+// p5scripts/changeScene.js
 
 function changeScene() {
   switch (locationNum) {

@@ -1,4 +1,4 @@
-// testing_Debug.js
+// p5scripts/testing_Debug.js
 
 function showXY() {
   let clickXY = true;

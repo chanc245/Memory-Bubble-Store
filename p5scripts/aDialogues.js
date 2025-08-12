@@ -1,4 +1,5 @@
-// aDialogues.js
+// p5scripts/aDialogues.js
+
 let currentIndex = 0;
 
 let text_item_wrong = `This doesn’t seem like the right item for this customer.`;

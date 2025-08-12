@@ -1,4 +1,4 @@
-// scene34_panda.js
+// p5scenes/scene34_panda.js
 
 function scene3() {
   push();
