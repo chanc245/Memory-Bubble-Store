@@ -1,3 +1,5 @@
+// scene0_title.js
+
 function scene0() {
   push();
 
@@ -5,23 +7,23 @@ function scene0() {
 
   fill(220, 225, 180);
   textFont(BulkyPixels);
-  textLeading(65)
+  textLeading(65);
   textSize(64);
   text("Memory Bubble Store", 55, 100, 450, 300);
-  
-  push()
-  textAlign(CENTER)
+
+  push();
+  textAlign(CENTER);
   fill(240, 240, 220);
-  textLeading(25)
+  textLeading(25);
   textSize(24);
   text("pop to start", 365, 330, 100, 100);
-  pop()
-  
+  pop();
+
   fill(220, 225, 180, 150);
   textFont(halfBoldPixel);
   textSize(14);
   text("Havenever Studio 2025", 55, 260);
-  
+
   push(); //spinning start
   imageMode(CENTER);
   translate(415, 330);

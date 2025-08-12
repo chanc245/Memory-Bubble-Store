@@ -1,6 +1,8 @@
+// scene56_mom.js
+
 function scene5() {
   push();
-  
+
   image(scene1_Img, 0, 0, bgW, bgH);
 
   rightItemNextScene(495, 160, 580, 215, 6);
@@ -40,8 +42,6 @@ function scene5() {
     // item_doll_wrong.exit();
     item_ball_wrong.display();
     item_ball_wrong.exit();
-
-    
   }
 
   tri_selectSection(545, 415, 580, 445);

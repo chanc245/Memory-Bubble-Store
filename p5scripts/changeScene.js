@@ -1,3 +1,5 @@
+// changeScene.js
+
 function changeScene() {
   switch (locationNum) {
     case 0:
@@ -52,9 +54,8 @@ function changeScene() {
       scene12();
       break;
   }
-  
+
   if (locationNum == 11 && keyIsDown(32)) {
-    locationNum++
+    locationNum++;
   }
-    
 }

@@ -1,3 +1,5 @@
+// setup.js
+
 function startTimer() {
   timerStart = millis();
   timerStarted = true;
@@ -108,6 +110,6 @@ function showItemText(x1, y1, action) {
 
 function rightItemNextScene(x1, y1, x2, y2, num) {
   if (mouseWithin(x1, y1, x2, y2) && mouseIsPressed) {
-    locationNum = num
+    locationNum = num;
   }
 }

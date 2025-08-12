@@ -1,3 +1,5 @@
+// testing_Debug.js
+
 function showXY() {
   let clickXY = true;
   prevClick = clickCount;
@@ -62,12 +64,9 @@ function sceneText_Debug() {
 function allDebugFunction() {
   // sceneFastChange_Debug();
   // sceneText_Debug();
-
   // char01_kid_start.display(); //testing dialogue
   // char01_kid_end.display();
   // showItemText(490, 15, () => item_flower_text.display()); //testing item_text
-  
-  
   // push()
   // textFont(BulkyPixels);
   // textAlign(CENTER)

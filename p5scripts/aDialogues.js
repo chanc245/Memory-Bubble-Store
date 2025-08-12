@@ -1,3 +1,4 @@
+// aDialogues.js
 let currentIndex = 0;
 
 let text_item_wrong = `This doesn’t seem like the right item for this customer.`;
@@ -518,7 +519,7 @@ let char05_h_end = [
     gif: "cg_hedgehog_2",
     texts: `I can’t fly, but I can place my worries and negative emotions on the airplane and send them away…`,
   },
-   {
+  {
     textType: 0,
     name: "Angry Hedgehog",
     emotion: "h_happy",

@@ -1,3 +1,5 @@
+// aDefGlob_basic
+
 //CLICK COUNTS
 let clickCount = 0;
 let prevClick;
@@ -9,10 +11,10 @@ let chWH = 350; //Character img hight
 
 let locationNum = 0; //scene number
 
-let timerStart = null; 
+let timerStart = null;
 let timerStarted = false;
 
-let timerStart_s11 = null; 
+let timerStart_s11 = null;
 let timerStarted_s11 = false;
 
 let ang = 0;

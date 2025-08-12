@@ -1,3 +1,5 @@
+// ShowHint.js
+
 class ShowHint {
   constructor(
     enterX1,
@@ -69,8 +71,8 @@ class ShowHint {
       mouseY < this.enterY2 &&
       mouseIsPressed
     ) {
-      console.log("retrun right() true")
-      return true
+      console.log("retrun right() true");
+      return true;
     }
   }
 

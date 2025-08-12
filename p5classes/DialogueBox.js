@@ -1,3 +1,5 @@
+// DialogueBox.js
+
 class DialogueBox {
   constructor(texts) {
     this.boxX = 20;
@@ -39,19 +41,24 @@ class DialogueBox {
       if (this.currentEmotion == "kid_happy") this.currentEmotion = kid_happy;
       if (this.currentEmotion == "kid_stress") this.currentEmotion = kid_stress;
       if (this.currentEmotion == "kid_think") this.currentEmotion = kid_think;
-      if (this.currentEmotion == "panda_tired") this.currentEmotion = panda_tired;
-      if (this.currentEmotion == "panda_think") this.currentEmotion = panda_think;
-      if (this.currentEmotion == "panda_happy") this.currentEmotion = panda_happy;
+      if (this.currentEmotion == "panda_tired")
+        this.currentEmotion = panda_tired;
+      if (this.currentEmotion == "panda_think")
+        this.currentEmotion = panda_think;
+      if (this.currentEmotion == "panda_happy")
+        this.currentEmotion = panda_happy;
       if (this.currentEmotion == "mom_stress") this.currentEmotion = mom_stress;
       if (this.currentEmotion == "mom_think") this.currentEmotion = mom_think;
       if (this.currentEmotion == "mom_happy") this.currentEmotion = mom_happy;
       if (this.currentEmotion == "moles_sad") this.currentEmotion = moles_sad;
-      if (this.currentEmotion == "moles_think") this.currentEmotion = moles_think;
-      if (this.currentEmotion == "moles_happy") this.currentEmotion = moles_happy;
+      if (this.currentEmotion == "moles_think")
+        this.currentEmotion = moles_think;
+      if (this.currentEmotion == "moles_happy")
+        this.currentEmotion = moles_happy;
       if (this.currentEmotion == "h_angry") this.currentEmotion = h_angry;
       if (this.currentEmotion == "h_think") this.currentEmotion = h_think;
       if (this.currentEmotion == "h_happy") this.currentEmotion = h_happy;
-      
+
       image(this.currentEmotion, 0, 0, 640, 480);
     }
   }
@@ -63,7 +70,7 @@ class DialogueBox {
     image(this.boxType(), this.boxX, this.boxY, this.width, this.height);
 
     fill(100);
-    textFont(halfBoldPixel)
+    textFont(halfBoldPixel);
     textSize(16);
     textAlign(LEFT, TOP);
     text(this.texts, this.textX, this.textY, 500, 130);

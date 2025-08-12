@@ -1,6 +1,8 @@
+// scene78_farmer.js
+
 function scene7() {
-    push();
-  
+  push();
+
   image(scene1_Img, 0, 0, bgW, bgH);
 
   rightItemNextScene(55, 290, 140, 345, 8);
@@ -40,8 +42,6 @@ function scene7() {
     item_doll_wrong.exit();
     item_ball_wrong.display();
     item_ball_wrong.exit();
-
-    
   }
 
   tri_selectSection(545, 415, 580, 445);
@@ -49,7 +49,7 @@ function scene7() {
 }
 
 function scene8() {
-   push();
+  push();
   image(scene1_Img, 0, 0, bgW, bgH);
 
   char04_mole_start.isActive = false;

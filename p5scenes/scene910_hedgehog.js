@@ -1,6 +1,8 @@
+// scene910_hedgehog.js
+
 function scene9() {
-    push();
-  
+  push();
+
   image(scene1_Img, 0, 0, bgW, bgH);
 
   rightItemNextScene(55, 160, 140, 215, 10);
@@ -40,8 +42,6 @@ function scene9() {
     item_doll_wrong.exit();
     item_ball_wrong.display();
     item_ball_wrong.exit();
-
-    
   }
 
   tri_selectSection(545, 415, 580, 445);
@@ -49,7 +49,7 @@ function scene9() {
 }
 
 function scene10() {
-   push();
+  push();
   image(scene1_Img, 0, 0, bgW, bgH);
 
   char05_h_start.isActive = false;

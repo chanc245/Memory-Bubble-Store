@@ -1,20 +1,22 @@
+// scene12_kid.js
+
 function scene1() {
   push();
 
   image(scene1_Img, 0, 0, bgW, bgH);
-  
-  rightItemNextScene(495, 27, 580, 87, 2)
+
+  rightItemNextScene(495, 27, 580, 87, 2);
 
   if (!timerStarted && locationNum == 1) {
     startTimer();
     timerStarted = true;
   }
-  
+
   if (timerStart !== null && millis() - timerStart > 1000) {
     image(kid_stress, 0, 0, bgW, bgH);
     char01_kid_start.display();
   }
-  
+
   if (char01_kid_start.isActive) tri_selectSection(545, 415, 580, 445);
 
   if (!char01_kid_start.isActive) {
@@ -37,16 +39,16 @@ function scene1() {
     item_ball_wrong.exit();
 
     tri_selectSection(545, 415, 580, 445);
-  } 
+  }
 
   pop();
 }
 
 function scene2() {
   image(scene1_Img, 0, 0, bgW, bgH);
-  
+
   char01_kid_start.isActive = false;
   char01_kid_end.display();
-  
+
   tri_selectSection(545, 415, 580, 445);
 }

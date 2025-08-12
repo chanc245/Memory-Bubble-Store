@@ -1,3 +1,5 @@
+// MemoryDiaBox.js
+
 class MemoryDiaBox {
   constructor(texts) {
     this.boxX = 20;
@@ -64,15 +66,20 @@ class MemoryDiaBox {
       if (this.currentEmotion == "kid_happy") this.currentEmotion = kid_happy;
       if (this.currentEmotion == "kid_stress") this.currentEmotion = kid_stress;
       if (this.currentEmotion == "kid_think") this.currentEmotion = kid_think;
-      if (this.currentEmotion == "panda_tired") this.currentEmotion = panda_tired;
-      if (this.currentEmotion == "panda_think") this.currentEmotion = panda_think;
-      if (this.currentEmotion == "panda_happy") this.currentEmotion = panda_happy;
+      if (this.currentEmotion == "panda_tired")
+        this.currentEmotion = panda_tired;
+      if (this.currentEmotion == "panda_think")
+        this.currentEmotion = panda_think;
+      if (this.currentEmotion == "panda_happy")
+        this.currentEmotion = panda_happy;
       if (this.currentEmotion == "mom_stress") this.currentEmotion = mom_stress;
       if (this.currentEmotion == "mom_think") this.currentEmotion = mom_think;
       if (this.currentEmotion == "mom_happy") this.currentEmotion = mom_happy;
       if (this.currentEmotion == "moles_sad") this.currentEmotion = moles_sad;
-      if (this.currentEmotion == "moles_think") this.currentEmotion = moles_think;
-      if (this.currentEmotion == "moles_happy") this.currentEmotion = moles_happy;
+      if (this.currentEmotion == "moles_think")
+        this.currentEmotion = moles_think;
+      if (this.currentEmotion == "moles_happy")
+        this.currentEmotion = moles_happy;
       if (this.currentEmotion == "h_angry") this.currentEmotion = h_angry;
       if (this.currentEmotion == "h_think") this.currentEmotion = h_think;
       if (this.currentEmotion == "h_happy") this.currentEmotion = h_happy;
@@ -98,7 +105,14 @@ class MemoryDiaBox {
   }
 
   checkLocationChange() {
-    if (locationNum == 2 || locationNum == 4 || locationNum == 6 || locationNum == 8 || locationNum == 10) locationNum++;
+    if (
+      locationNum == 2 ||
+      locationNum == 4 ||
+      locationNum == 6 ||
+      locationNum == 8 ||
+      locationNum == 10
+    )
+      locationNum++;
   }
 
   checkStatus() {
@@ -126,7 +140,7 @@ class MemoryDiaBox {
       this.checkStatus();
     } else {
       this.isActive = false;
-      this.checkLocationChange()
+      this.checkLocationChange();
     }
   }
 }
