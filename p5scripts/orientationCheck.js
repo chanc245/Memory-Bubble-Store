@@ -20,7 +20,7 @@ function drawRotateOverlay() {
     fill(0, 200);
     rect(0, 0, width, height);
     textAlign(CENTER, CENTER);
-    textSize(20);
+    textSize(40);
     fill(255);
     text(
       "Please rotate your device\nto landscape to play",
