@@ -19,6 +19,9 @@ let timerStarted_s11 = false;
 
 let ang = 0;
 
+// Play the ending GIF once, then auto-advance (28s)
+const ENDING_GIF_ONCE_MS = 28000;
+
 // ===== Responsive canvas scaling =====
 let canvasW = 640; // actual canvas pixel width
 let canvasH = 480; // actual canvas pixel height
@@ -52,7 +55,6 @@ let touchDown = false;
 let inputLockedUntil = 0;
 
 function lockInput(ms = 300) {
-  // Lock inputs for a short period (e.g., after resize/orientationchange)
   inputLockedUntil = millis() + ms;
 }
 
@@ -61,7 +63,6 @@ function inputLockedNow() {
 }
 
 function pointerX() {
-  // Map physical pointer to virtual coordinates
   const x =
     typeof touches !== "undefined" && touches.length ? touches[0].x : mouseX;
   return x / renderScale;
@@ -72,7 +73,6 @@ function pointerY() {
   return y / renderScale;
 }
 function isPointerDown() {
-  // if locked, act like not pressed
   if (inputLockedNow()) return false;
   return mouseIsPressed || touchDown;
 }
@@ -81,7 +81,6 @@ function pointerWithin(x1, y1, x2, y2) {
   const y = pointerY();
   return x > x1 && x < x2 && y > y1 && y < y2;
 }
-// Keep compatibility with any old calls
 function mouseWithin(x1, y1, x2, y2) {
   return pointerWithin(x1, y1, x2, y2);
 }

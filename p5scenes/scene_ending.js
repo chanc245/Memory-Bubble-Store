@@ -1,9 +1,20 @@
 // p5scenes/scene_ending.js
 
 function scene11() {
-  image(scene11_Gif, 0, 0, bgW, bgH);
+  // Show the real GIF overlay on top of the canvas so it animates everywhere
+  showEndingGifOverlay();
 
-  // Start the timer the moment we enter scene 11
+  // If you still want a text hint drawn on the canvas underneath:
+  push();
+  textFont(BulkyPixels);
+  textAlign(CENTER);
+  fill(100, 80, 80);
+  textLeading(25);
+  textSize(15);
+  text("press [space] to skip", 0, 400, 640, 100);
+  pop();
+
+  // Start timer when we first enter scene 11 (once)
   if (!timerStarted_s11 && locationNum === 11) {
     startTimer_s11();
     timerStarted_s11 = true;
@@ -14,21 +25,18 @@ function scene11() {
     timerStart_s11 !== null &&
     millis() - timerStart_s11 >= ENDING_GIF_ONCE_MS
   ) {
-    // go to the end page automatically
+    hideEndingGifOverlay();
     locationNum = 12;
-
-    // cleanup any touch overlays if present
     if (typeof tappedItemKey !== "undefined") tappedItemKey = null;
     if (typeof clearAllWrongHints === "function") clearAllWrongHints();
-
-    // reset the ending timer flags (optional)
     timerStart_s11 = null;
     timerStarted_s11 = false;
     return;
   }
 
-  // Optional: allow skipping via SPACE right away
+  // Optional skip
   if (keyIsDown(32)) {
+    hideEndingGifOverlay();
     locationNum = 12;
     if (typeof tappedItemKey !== "undefined") tappedItemKey = null;
     if (typeof clearAllWrongHints === "function") clearAllWrongHints();
@@ -36,19 +44,12 @@ function scene11() {
     timerStarted_s11 = false;
     return;
   }
-
-  // Small on-screen hint (now says "press [space] to skip")
-  push();
-  textFont(BulkyPixels);
-  textAlign(CENTER);
-  fill(100, 80, 80);
-  textLeading(25);
-  textSize(15);
-  text("press [space] to skip", 0, 400, 640, 100);
-  pop();
 }
 
 function scene12() {
+  // Make sure overlay is hidden in the end page
+  hideEndingGifOverlay();
+
   push();
   image(scene12_Img, 0, 0, bgW, bgH);
 

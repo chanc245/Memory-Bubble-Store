@@ -201,23 +201,17 @@ function mousePressed() {
   if (typeof ensureAudio === "function") ensureAudio(); // desktop fallback if autoplay blocked
   pointerPressed();
 }
-
-// Allow page scrolling; also ignore multi-touch (pinch zoom)
 function touchStarted() {
-  // Ignore if two-finger (pinch) — avoid accidental taps during zoom/resize
   if (typeof touches !== "undefined" && touches.length > 1) {
     touchDown = false;
-    return; // do not block scrolling
+    return; // allow pinch/scroll
   }
   touchDown = true;
-
   if (typeof ensureAudio === "function") ensureAudio();
   handleTouchTap(pointerX(), pointerY());
   pointerPressed();
 }
-function touchMoved() {
-  // allow normal scroll
-}
+function touchMoved() {}
 function touchEnded() {
   touchDown = false;
 }

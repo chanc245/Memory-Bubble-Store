@@ -1,5 +1,9 @@
 // p5sketch.js
 
+let cnv; // canvas
+let stage; // container div that wraps canvas + overlays
+let scene11GifDom; // <img> overlay for ending animation
+
 function preload() {
   // Font
   halfBoldPixel = loadFont("p5assets/fonts/half_bold_pixel-7.ttf");
@@ -9,7 +13,7 @@ function preload() {
   scene0_Img = loadImage("p5assets/bg/bg_title.png");
   scene01_Img = loadImage("p5assets/bg/bg_title_rain.gif");
   scene1_Img = loadImage("p5assets/bg/bg_store.png");
-  scene11_Gif = loadImage("p5assets/bg/bg_ending.gif");
+  scene11_Gif = loadImage("p5assets/bg/bg_ending.gif"); // static fallback only
   scene12_Img = loadImage("p5assets/bg/bg_sunny.jpg");
 
   // Chara img
@@ -35,7 +39,7 @@ function preload() {
   ui_startBubble = loadImage("p5assets/ui/ui_startBubble.png");
   ui_thinkBubble = loadImage("p5assets/ui/ui_thinkBubble.png");
 
-  // Gifs
+  // Gifs (memories)
   cg_kid_1 = loadImage("p5assets/gif/cg_kid_1.gif");
   cg_kid_2 = loadImage("p5assets/gif/cg_kid_2.gif");
   cg_panda_1 = loadImage("p5assets/gif/cg_panda_1.gif");
@@ -60,10 +64,32 @@ function setup() {
     isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }
 
-  // Compute initial size and create the canvas
+  // Build a "stage" container so we can overlay the GIF exactly over the canvas
+  stage = createDiv();
+  stage.style("position", "relative");
+  stage.style("display", "inline-block"); // shrink-wrap to its content
+
+  // Initial sizing
   computeCanvasSize();
-  createCanvas(canvasW, canvasH);
+  stage.style("width", canvasW + "px");
+  stage.style("height", canvasH + "px");
+
+  // Create canvas inside the stage
+  cnv = createCanvas(canvasW, canvasH);
   pixelDensity(1);
+  cnv.parent(stage);
+
+  // Create the ending GIF overlay as an actual DOM <img> inside the same stage
+  scene11GifDom = createImg("p5assets/bg/bg_ending.gif", "ending");
+  scene11GifDom.parent(stage);
+  scene11GifDom.style("position", "absolute");
+  scene11GifDom.style("left", "0");
+  scene11GifDom.style("top", "0");
+  scene11GifDom.style("width", "100%");
+  scene11GifDom.style("height", "100%");
+  scene11GifDom.style("object-fit", "fill"); // 4:3 fills the stage exactly
+  scene11GifDom.style("z-index", "5");
+  scene11GifDom.style("display", "none"); // hidden by default
 
   // Character dialogue
   char01_kid_start = new DialogueBox(char01_kid_start);
@@ -166,26 +192,30 @@ function setup() {
     } catch (e) {}
   }
 
-  // Lock input briefly on orientation/resize to avoid accidental taps
+  // Handle resizing/orientation — keep stage sized to canvas
   window.addEventListener("resize", () => {
     computeCanvasSize();
     resizeCanvas(canvasW, canvasH);
+    stage.style("width", canvasW + "px");
+    stage.style("height", canvasH + "px");
     lockInput(350);
   });
   window.addEventListener("orientationchange", () => {
-    // compute after a tick because some browsers report old sizes during event
     setTimeout(() => {
       computeCanvasSize();
       resizeCanvas(canvasW, canvasH);
+      stage.style("width", canvasW + "px");
+      stage.style("height", canvasH + "px");
       lockInput(500);
     }, 100);
   });
 }
 
 function windowResized() {
-  // p5 callback (some platforms)
   computeCanvasSize();
   resizeCanvas(canvasW, canvasH);
+  stage.style("width", canvasW + "px");
+  stage.style("height", canvasH + "px");
   lockInput(350);
 }
 
@@ -205,6 +235,14 @@ function draw() {
 
   allDebugFunction();
   pop();
+}
+
+// Utilities for the ending GIF overlay
+function showEndingGifOverlay() {
+  if (scene11GifDom) scene11GifDom.style("display", "block");
+}
+function hideEndingGifOverlay() {
+  if (scene11GifDom) scene11GifDom.style("display", "none");
 }
 
 // NOTE: mousePressed/touch handlers are in p5scripts/touchScreen.js
