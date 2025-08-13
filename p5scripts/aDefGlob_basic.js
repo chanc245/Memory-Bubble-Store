@@ -4,10 +4,10 @@
 let clickCount = 0;
 let prevClick;
 
-let bgW = 640; // background 4:3 width
-let bgH = 480; // background 4:3 height
+let bgW = 640; // virtual width
+let bgH = 480; // virtual height
 
-let chWH = 350; // Character img height
+let chWH = 350; // Character img height (virtual)
 
 let locationNum = 0; // scene number
 
@@ -19,24 +19,61 @@ let timerStarted_s11 = false;
 
 let ang = 0;
 
-// Duration for the ending GIF to play once (milliseconds)
-const ENDING_GIF_ONCE_MS = 28000;
+// ===== Responsive canvas scaling =====
+let canvasW = 640; // actual canvas pixel width
+let canvasH = 480; // actual canvas pixel height
+let renderScale = 1; // canvasW / bgW
 
-// --- Pointer (mouse + touch) helpers ---
-// touchDown is toggled in touchScreen.js handlers
+function computeCanvasSize() {
+  // Fit inside current browser window while preserving 4:3
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  // Option A: fit by width first, then cap by height
+  let w = Math.min(W, Math.floor((H * 4) / 3));
+  let h = Math.min(H, Math.floor((W * 3) / 4));
+
+  // Choose the largest that fits both constraints
+  if (Math.floor((w * 3) / 4) <= H) {
+    canvasW = w;
+    canvasH = Math.floor((w * 3) / 4);
+  } else {
+    canvasH = h;
+    canvasW = Math.floor((h * 4) / 3);
+  }
+
+  renderScale = canvasW / bgW;
+}
+
+// ===== Pointer (mouse + touch) helpers =====
 let touchDown = false;
 
+// Debounce/lock input while resizing/rotating/scrolling
+let inputLockedUntil = 0;
+
+function lockInput(ms = 300) {
+  // Lock inputs for a short period (e.g., after resize/orientationchange)
+  inputLockedUntil = millis() + ms;
+}
+
+function inputLockedNow() {
+  return millis && millis() < inputLockedUntil;
+}
+
 function pointerX() {
-  return typeof touches !== "undefined" && touches.length
-    ? touches[0].x
-    : mouseX;
+  // Map physical pointer to virtual coordinates
+  const x =
+    typeof touches !== "undefined" && touches.length ? touches[0].x : mouseX;
+  return x / renderScale;
 }
 function pointerY() {
-  return typeof touches !== "undefined" && touches.length
-    ? touches[0].y
-    : mouseY;
+  const y =
+    typeof touches !== "undefined" && touches.length ? touches[0].y : mouseY;
+  return y / renderScale;
 }
 function isPointerDown() {
+  // if locked, act like not pressed
+  if (inputLockedNow()) return false;
   return mouseIsPressed || touchDown;
 }
 function pointerWithin(x1, y1, x2, y2) {
@@ -44,7 +81,7 @@ function pointerWithin(x1, y1, x2, y2) {
   const y = pointerY();
   return x > x1 && x < x2 && y > y1 && y < y2;
 }
-// Keep compatibility with existing calls
+// Keep compatibility with any old calls
 function mouseWithin(x1, y1, x2, y2) {
   return pointerWithin(x1, y1, x2, y2);
 }
@@ -55,7 +92,6 @@ function mouseWithin(x1, y1, x2, y2) {
 let audioPrimed = false;
 
 function ensureAudio() {
-  // Resume p5 AudioContext (required on mobile)
   try {
     if (typeof getAudioContext === "function") {
       const ctx = getAudioContext && getAudioContext();
@@ -67,17 +103,12 @@ function ensureAudio() {
         userStartAudio();
       }
     }
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) {}
 
-  // Start/loop bg music once
   if (typeof bg_song !== "undefined" && bg_song && !bg_song.isPlaying()) {
     try {
       bg_song.loop();
-    } catch (e) {
-      // ignore; will retry on next interaction
-    }
+    } catch (e) {}
   }
 
   audioPrimed = true;

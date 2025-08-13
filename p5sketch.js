@@ -52,36 +52,18 @@ function preload() {
   bg_song = loadSound("p5assets/bg/bg_music.mp3");
 }
 
-let canvasW = 640;
-let canvasH = 480;
-
 function setup() {
-  createCanvas(640, 480);
   frameRate(30);
-  checkOrientation();
 
   // Detect touch device once here
   if (typeof isTouchDevice !== "undefined") {
     isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }
 
-  isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-  if (isTouchDevice) {
-    // For phone — smaller canvas
-    canvasW = 480;
-    canvasH = 360;
-  }
-
+  // Compute initial size and create the canvas
+  computeCanvasSize();
   createCanvas(canvasW, canvasH);
   pixelDensity(1);
-
-  // If you want to keep aspect ratio but scale content
-  if (isTouchDevice) {
-    scaleFactor = canvasW / 640; // used later in draw()
-  } else {
-    scaleFactor = 1;
-  }
 
   // Character dialogue
   char01_kid_start = new DialogueBox(char01_kid_start);
@@ -103,7 +85,7 @@ function setup() {
   item_airplane_text = new DialogueBox(item_airplane_text);
   item_extra_text = new DialogueBox(item_extra_text);
 
-  // Item click result (wrong) — we won’t show these bubbles on touch, but keep for desktop
+  // Item click result (wrong)
   item_extra_wrong = new ShowHint(
     55,
     27,
@@ -178,39 +160,51 @@ function setup() {
   );
 
   // --- AUDIO START POLICY ---
-  // Desktop browsers: try to start immediately on load
-  // Mobile browsers: wait for first touch (handled in touchScreen.js)
   if (!isTouchDevice) {
     try {
-      if (bg_song && !bg_song.isPlaying()) {
-        bg_song.loop(); // desktop usually allows autoplay
-      }
-    } catch (e) {
-      // If blocked, first click will call ensureAudio()
-    }
+      if (bg_song && !bg_song.isPlaying()) bg_song.loop();
+    } catch (e) {}
   }
+
+  // Lock input briefly on orientation/resize to avoid accidental taps
+  window.addEventListener("resize", () => {
+    computeCanvasSize();
+    resizeCanvas(canvasW, canvasH);
+    lockInput(350);
+  });
+  window.addEventListener("orientationchange", () => {
+    // compute after a tick because some browsers report old sizes during event
+    setTimeout(() => {
+      computeCanvasSize();
+      resizeCanvas(canvasW, canvasH);
+      lockInput(500);
+    }, 100);
+  });
+}
+
+function windowResized() {
+  // p5 callback (some platforms)
+  computeCanvasSize();
+  resizeCanvas(canvasW, canvasH);
+  lockInput(350);
 }
 
 function draw() {
   background(100);
-  push();
-  scale(scaleFactor);
 
-  if (showRotateOverlay) {
-    drawRotateOverlay();
-    return; // stop drawing game until rotated
-  }
+  // Scale entire render so your original 640×480 coordinates still work
+  push();
+  scale(renderScale, renderScale);
 
   changeScene();
 
-  // Draw touch-only tapped item info (explanation or wrong-line page)
+  // touch-only tapped item info (explanation / wrong page)
   if (typeof drawTappedItemInfo === "function") {
     drawTappedItemInfo();
   }
 
-  pop();
   allDebugFunction();
+  pop();
 }
 
-// NOTE: No mousePressed() here.
-// Desktop clicks and mobile taps are handled in p5scripts/touchScreen.js via pointerPressed().
+// NOTE: mousePressed/touch handlers are in p5scripts/touchScreen.js
